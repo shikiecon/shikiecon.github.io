@@ -11,5 +11,8 @@ draft: false
 
 这是一个测试，行内公式为$f(x)$，行间公式为
 $$
-f(x+y)=xy
+\begin{align}
+f(x+y)&=x+y \\
+&=xy
+\end{align}\tag{1.1}
 $$
