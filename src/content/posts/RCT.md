@@ -54,7 +54,7 @@ $$
 &\quad +(\mathbb{E}[Y_i(0)|D_i=1]-\mathbb{E}[Y_i(0)|D_i=0])\mathbb{P}[D_i=1]
 \end{align*}
 $$
-根据随机处置指派可知$\text{bias}=0$, 从而$\tau^\ast=\tau$. 根据式(2) 我们可以得到**均值差 (Difference-in-Means, DM)**估计量
+根据随机处置指派可知$\text{bias}=0$, 从而$\tau^\ast=\tau$. 根据式(2) 我们可以得到 **均值差 (Difference-in-Means, DM)** 估计量
 $$
 \hat{\tau}_{\text{DM}}=n_1^{-1}\sum_{D_i=1}Y_i-n_0^{-1}\sum_{D_i=0}Y_i
 $$
