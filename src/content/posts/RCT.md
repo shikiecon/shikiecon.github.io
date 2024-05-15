@@ -1,7 +1,7 @@
 ---
 title: 随机控制实验
 published: 2024-05-15
-description: ''
+description: 简要介绍随机控制实验(RCT)的基本概念.
 tags: [计量经济学, 因果推断]
 category: 经济学
 draft: false
