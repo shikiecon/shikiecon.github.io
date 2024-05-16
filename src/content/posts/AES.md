@@ -135,3 +135,4 @@ s_{2,c}'&=s_{0,c}\oplus s_{1,c}\oplus(\{02\}\cdot s_{2,c})\oplus (\{03\}\cdot s_
 s_{3,c}'&=(\{03\}\cdot s_{0,c})\oplus s_{1,c}\oplus s_{2,c}\oplus (\{02\}\cdot s_{3,c})
 \end{align*}
 $$
+ 
