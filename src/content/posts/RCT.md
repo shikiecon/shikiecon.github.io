@@ -23,7 +23,7 @@ $$
 然而, 我们或许仍能用 **随机控制实验 (Randomized Controlled Trial, RCT)** 来获取$\Delta_{i}$​​的某些性质. 在某些情况下, 大型的随机实验可以让我们得到 **平均处置效应 (Average Treatment Effect, ATE)**
 $$
 \begin{equation}
-\tau=\mathbb{E}[Y_{i}(1)-Y_{i}(0)] \tag{2}
+\tau=\mathbb{E}[Y_{i}(1)-Y_{i}(0)] \tag{C.1}
 \end{equation}
 $$
 这里的$\tau$指的是$\Delta_{i}$在总体上的平均值. 继续之前的例子, 个体服药效果$\Delta_{i}$等于个体$i$在$t$时刻服药后的健康程度减去个体$i$在$t$时刻没有服药的健康程度, 因为她不能既服药又不服药, 所以$\Delta_{i}$无法观测, 但是在一定假设下, RCT使得我们能够得到个体服药效果在总体中的平均值$\tau$​.
@@ -40,7 +40,7 @@ $$
 基于SUTVA和随机处置指派, ATE可以被识别为
 $$
 \begin{equation}
-  \tau^\ast=\mathbb{E}[Y_i|D_i=1]-\mathbb{E}[Y_i|D_i=0]
+  \tau^\ast=\mathbb{E}[Y_i|D_i=1]-\mathbb{E}[Y_i|D_i=0] \tag{C.2}
 \end{equation}
 $$
 这是因为可以将$\tau^\ast$分解为
@@ -54,7 +54,7 @@ $$
 &\quad +(\mathbb{E}[Y_i(0)|D_i=1]-\mathbb{E}[Y_i(0)|D_i=0])\mathbb{P}[D_i=1]
 \end{align*}
 $$
-根据随机处置指派可知$\text{bias}=0$, 从而$\tau^\ast=\tau$. 根据式(2) 我们可以得到 **均值差 (Difference-in-Means, DM)** 估计量
+根据随机处置指派可知$\text{bias}=0$, 从而$\tau^\ast=\tau$. 根据式(C.2) 我们可以得到 **均值差 (Difference-in-Means, DM)** 估计量
 $$
 \hat{\tau}_{\text{DM}}=n_1^{-1}\sum_{D_i=1}Y_i-n_0^{-1}\sum_{D_i=0}Y_i
 $$
@@ -66,7 +66,10 @@ $$
 $$
 \sqrt{n}(\hat{\tau}_{\text{DM}}-\tau)\xrightarrow{d}\mathcal{N}(0,V_{\text{DM}})
 $$
-其中$V_\text{DM}=\mathrm{var}[Y_i(0)]/\mathbb{P}[D_i=0]+\mathrm{var}[Y_i(1)]/\mathbb{P}[D_i=1]$.
+其中$V_\text{DM}=\mathrm{var}[Y_i(0)]/\mathbb{P}[D_i=0]+\mathrm{var}[Y_i(1)]/\mathbb{P}[D_i=1]$, 它的一致估计量为
+$$
+\hat{V}_\mathrm{DM}=\frac{1}{n_1-1}\sum_{D_i=1}\left(Y_i-\frac{1}{n_1}\sum_{D_i=1}Y_i\right)^2+\frac{1}{n_0-1}\sum_{D_i=0}\left(Y_i-\frac{1}{n_0}\sum_{D_i=0}Y_i\right)^2
+$$
 
 [^1]: 这里暗含了$\Delta_{i}$是存在的, 对个体$i$的处置或不处置仅影响自己, 不会影响到其他个体. 这个隐含的假设在医学实验中是可行的, 但是在社会科学或经济学中似乎不太合理.
 
@@ -75,13 +78,13 @@ $$
 初级的计量经济学早已讲授过线性回归模型，这里将介绍它与RCT的关系. 仍考虑两期数据, 假设 **数据生成过程(DGP)** 为
 $$
 \begin{equation}
-  Y_i(d)=c_{(d)}+X_i'\beta_{(d)}+e_i(d)
+  Y_i(d)=c_{(d)}+X_i'\beta_{(d)}+e_i(d) \tag{C.3}
 \end{equation}
 $$
 并且满足$\mathbb{E}[e_i(d)|X_i]=0$且$\mathrm{var}[e_i(d)|X_i]=\sigma^2$. 简单起见, 我们还假设
 $$
 \begin{equation}
-  \mathbb{P}[D_i=0]=\mathbb{P}[D_i=1]=\frac{1}{2}
+  \mathbb{P}[D_i=0]=\mathbb{P}[D_i=1]=\frac{1}{2} \tag{C.4}
 \end{equation}
 $$
 此时
@@ -134,4 +137,5 @@ $$
 $$
 [c^\ast_{(d)},\beta^\ast_{(d)}]=\arg\min_{c,\beta}\mathbb{E}[(Y_i(d)-X_i'\beta-c)^2]
 $$
-换言之, 无论$\mu_d(x)$是否是线性函数, OLS几乎总能减少DM的渐近方差! 这也解释了为何在RCT中使用线性回归模型来推断ATE: **在SUTVA和随机处置指派下, RCT可以正确识别ATE, 并且通过OLS得到的估计量通常比DM得到估计量更加渐近有效.**
+换言之, 无论$\mu_d(x)$是否是线性函数, OLS几乎总能减少DM的渐近方差! 这也解释了为何在RCT中使用线性回归模型来推断ATE: **在SUTVA和随机处置指派下, RCT可以正确识别ATE, 并且OLS和DM均能得到ATE的一致估计量，但前者是渐近有效的.**
+
