@@ -94,3 +94,44 @@ $$
 20&1\mathrm{A}&\mathrm{CA}&6\mathrm{F}\\ \hline
 \end{array} \tag{A.3}
 $$
+再下来是列混淆, 需要将状态矩阵(A.3)左乘以一个固定的$4\times 4$矩阵
+$$
+\begin{array}{|c|c|c|c|}
+\hline
+02 &03&01&01\\ \hline
+01&02&03&01 \\ \hline
+01&01&02&03 \\ \hline
+03&01&01&02\\ \hline
+\end{array}
+$$
+我们记状态矩阵(A.3)的每一列为$[s_{0,c},s_{1,c},s_{2,c},s_{3,c}]'$, 其中$0\leq c<4$. 经上述固定矩阵左乘后的新列向量为
+$$
+\begin{array}{|c|}
+\hline
+s_{0,c}' \\ \hline
+s_{1,c}' \\ \hline
+s_{2,c}' \\ \hline
+s_{3,c}' \\ \hline
+\end{array}\,\,=\,\,\begin{array}{|c|c|c|c|}
+\hline
+02 &03&01&01\\ \hline
+01&02&03&01 \\ \hline
+01&01&02&03 \\ \hline
+03&01&01&02\\ \hline
+\end{array}\,\,\bigotimes\,\,\begin{array}{|c|}
+\hline
+s_{0,c} \\ \hline
+s_{1,c} \\ \hline
+s_{2,c} \\ \hline
+s_{3,c} \\ \hline
+\end{array}
+$$
+其中
+$$
+\begin{align*}
+s_{0,c}'&=(\{02\}\cdot s_{0,c})\oplus(\{03\}\cdot s_{1,c})\oplus s_{2,c}\oplus s_{3,c} \\
+s_{1,c}'&=s_{0,c}\oplus(\{02\}\cdot s_{1,c})\oplus(\{03\}\cdot s_{2,c})\oplus s_{3,c} \\
+s_{2,c}'&=s_{0,c}\oplus s_{1,c}\oplus(\{02\}\cdot s_{2,c})\oplus (\{03\}\cdot s_{3,c}) \\
+s_{3,c}'&=(\{03\}\cdot s_{0,c})\oplus s_{1,c}\oplus s_{2,c}\oplus (\{02\}\cdot s_{3,c})
+\end{align*}
+$$
