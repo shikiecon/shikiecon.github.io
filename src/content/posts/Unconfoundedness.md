@@ -6,7 +6,7 @@ category: 经济学
 draft: false
 ---
 
-#### 基本概念
+### 基本概念
 
 尽管RCT的效力是最高的, 但RCT花费的代价也是巨大的, 甚至某些情况下无法进行实验, 随机处置指派不成立. 然而, 当控制了一系列可观测变量$X$后, 潜在结果可能独立于处置状态, 也即
 $$
@@ -38,7 +38,7 @@ $$
 
 基于倾向得分, 在SUTVA, 非混淆情形以及共同支撑域假设成立的情况下, 研究者可以使用 **倾向得分匹配 (Propensity Score Matching, PSM)** 和 **逆概率加权 (Inverse Probability Weighing, IPW)** 等方法来估计ATE或ATT.
 
-#### 倾向得分匹配
+### 倾向得分匹配
 
 PSM的主要思想比较简单, 当处置组和控制组的倾向得分相同时, 可以认为它们的可观测特征分布没有差别. 以ATT为例, 根据不同的协变量值$x$, 可以得到
 $$
@@ -59,6 +59,6 @@ $$
 $$
 其中$n_1$为处置组样本个数, $I_0$和$I_1$分别为控制组和处置组, $i$和$j$分别代表个体位于处置组和控制组, $S_p$为共同支撑域, $w_{ij}$为匹配权重 (不同匹配方法的权重不同).
 
-#### 参考文献
+### 参考文献
 
 Rosenbaum P R, Rubin D B. The Central Role of The Propensity Score in Observational Studies for Causal Effects[J]. Biometrika, 1983, 70(1): 41-55.
