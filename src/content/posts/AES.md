@@ -71,7 +71,7 @@ $$
 04&55&0\mathrm{C}&5\mathrm{D} \\ \hline
 0\mathrm{C}&39&06&56 \\ \hline
 43&10&06&54 \\ \hline
-\end{array}
+\end{array} \tag{A.1}
 $$
 
 然后开始进行第一轮加密的字节替换, 这需要用到[FIPS 197](https://doi.org/10.6028/NIST.FIPS.197-upd1)中的S盒将状态矩阵中的每一个元素进行替换, 例如元素`5D`被替换为S盒中第5行第D列的元素`4C`, 由此得到新的状态矩阵
@@ -82,6 +82,15 @@ $$
 \mathrm{F}2&\mathrm{FC}&\mathrm{FE}&4\mathrm{C} \\ \hline
 \mathrm{FE}&12&6\mathrm{F}&\mathrm{B1} \\ \hline
 1\mathrm{A}&\mathrm{CA}&\mathrm{6F}&20\\ \hline
-\end{array}
+\end{array} \tag{A.2}
 $$
-接下来是行移位, 
+接下来是行移位, 即让状态矩阵(A.2)的第$i$行中的每个字节向左移动$i-1$位, 这里$i=1,2,3,4$. 于是新的状态矩阵又变为
+$$
+\begin{array}{|c|c|c|c|}
+\hline
+59 &59&2\mathrm{C}&\mathrm{CF}\\ \hline
+\mathrm{FC}&\mathrm{FE}&4\mathrm{C}&\mathrm{F2} \\ \hline
+6\mathrm{F}&\mathrm{B}1&\mathrm{FE}&12 \\ \hline
+20&1\mathrm{A}&\mathrm{CA}&6\mathrm{F}\\ \hline
+\end{array} \tag{A.3}
+$$
