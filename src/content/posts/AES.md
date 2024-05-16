@@ -49,13 +49,12 @@ AES加密步骤包括 **字节替换(SubBytes)**、**行移位(RowShifts)**、**
 
 首先将明文和密钥储存在$4\times 4$矩阵中进行异或运算, 也即
 $$
-\begin{array}{|c|c|c|}
+\begin{array}{|c|c|c||}
 \hline
 54 &79&20&73 \\ \hline
 6\mathrm{F}&20&54&64 \\ \hline
 64&69&75&61 \\ \hline
 61&73&65&79 \\ \hline
-\hline
 \end{array}\,\, \bigoplus\,\,
 \begin{array}{|c|c|c|}
 \hline
@@ -63,13 +62,11 @@ $$
 6\mathrm{C}&20&6\mathrm{E}&39\\ \hline
 69&4\mathrm{B}&6\mathrm{A}&33 \\ \hline
 63&75&69&30 \\ \hline
-\hline
 \end{array}\,\,=\,\,\,\begin{array}{|c|c|c|}
 \hline
 15 &1\mathrm{C}&4\mathrm{F}&43\\ \hline
 03&00&3\mathrm{A}&5\mathrm{D} \\ \hline
 0\mathrm{D}&22&1\mathrm{F}&52 \\ \hline
 02&06&0\mathrm{C}&49 \\ \hline
-\hline
 \end{array}
 $$
