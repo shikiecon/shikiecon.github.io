@@ -196,11 +196,11 @@ $$
 $$
 与之前类似, 如果DGP是线性的, 那么$\hat{\mu}_{d}(x)$可由OLS得到.
 
-由于IPW估计量的一致性依赖于倾向得分估计的正确性, REG估计量的一致性依赖于模型设定, 我们可以将这两个估计量结合为增广IPW估计量
+由于IPW估计量的一致性依赖于倾向得分估计的正确性, REG估计量的一致性依赖于模型设定, 我们可以将这两个估计量结合为 **增广逆概率加权(Augmented IPW)** 估计量
 $$
 \hat{\tau}_\text{AIPW}=n^{-1}\sum_{i=1}^{n}\left[\hat{\mu}_{1}(X_i)-\hat{\mu}_{0}(X_i)+D_i\frac{Y_i-\hat{\mu}_{1}(X_i)}{\hat{p}(X_i)}-(1-D_i)\frac{Y_i-\hat{\mu}_{0}(X_i)}{1-\hat{p}(X_i)}\right]
 $$
-可以证明, 只要$\hat{p}(X_i)$和$\hat{\mu}_{d}(X_i)$中有一个是一致估计量, 那么$\hat{\tau}_\text{AIPW}$也是一致的, 表明AIPW估计量具有 (弱的)双重稳健性.
+可以证明, 只要$\hat{p}(X_i)$和$\hat{\mu}_{d}(X_i)$中有一个是一致估计量, 那么$\hat{\tau}_\text{AIPW}$也是一致的, 表明AIPW估计量具有(弱的)双重稳健性.
 
 注意, 双重稳健的AIPW估计量只保证了一致性, 但通常我们还关心收敛率和置信区间, 并且依赖于机器学习的现代统计模型通常要同时得到$\mu_d(x)$和$p(x)$​的一致估计量, 因此AIPW估计量可能并不是那么有用.
 
@@ -209,3 +209,5 @@ $$
 ### 参考文献
 
 Rosenbaum P R, Rubin D B. The Central Role of The Propensity Score in Observational Studies for Causal Effects[J]. Biometrika, 1983, 70(1): 41-55.
+
+邱嘉平. 因果推断实用计量方法[M]. 北京: 高等教育出版社, 2020.
