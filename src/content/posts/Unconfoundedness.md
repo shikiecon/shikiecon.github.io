@@ -8,7 +8,7 @@ draft: false
 
 ### 基本概念
 
-尽管RCT的效力是最高的, 但RCT花费的代价也是巨大的, 甚至某些情况下无法进行实验, 随机处置指派不成立. 然而, 当控制了一系列可观测变量$X$后, 潜在结果可能独立于处置状态, 也即
+尽管RCT的效力是最高的, 但RCT花费的代价也是巨大的, 甚至某些情况下无法进行实验(总不能随机让一部分人上学, 另一部分回家种地), 随机处置指派不成立. 然而, 当控制了一系列可观测变量$X$后, 潜在结果可能独立于处置状态, 也即
 $$
 \begin{equation}
   \left.\{Y_i(0),Y_i(1)\}\perp D_i\,\right|\,X_i \tag{C.5}
@@ -103,7 +103,108 @@ V_\text{AGG}&=\mathrm{var}[\tau(X_i)]+\sum_{x\in\mathcal{X}}\pi^2(x)\frac{1}{\pi
 &=\mathrm{var}[\tau(X_i)]+\mathbb{E}\left[\frac{\sigma^2(X_i)}{p(X_i)(1-p(X_i))}\right] \tag{C.8}
 \end{align}
 $$
-并且$\pi(x)=\mathbb{P}[X_i=x]$.
+并且$\pi(x)=\mathbb{P}[X_i=x]$​.
+
+### 逆概率加权估计
+
+如果协变量是连续型的, 那么需要将假设(C.6)替换为
+$$
+\begin{equation}
+  \{Y_i(0),Y_i(1)\}\perp D_i\,|\, p(X_i) \tag{C.9}
+\end{equation}
+$$
+此时我们有ATE的IPW估计量[^2]
+
+[^2]: 如果要估计ATT, 那么IPW估计量变为$\displaystyle ^\dagger\hat{\tau}_{\text{IPW}}=n_1^{-1}\sum_{i=1}^{n}\left[D_iY_i-\frac{(1-D_i)Y_i\hat{p}(X_i)}{1-\hat{p}(X_i)}\right]$.
+
+
+$$
+\begin{equation}
+  \hat{\tau}_\text{IPW}=n^{-1}\sum_{i=1}^{n}\left[\frac{D_iY_i}{\hat{p}(X_i)}-\frac{(1-D_i)Y_i}{1-\hat{p}(X_i)}\right] \tag{C.10}
+\end{equation}
+$$
+为了分析它的渐近性质, 我们首先给出理想IPW估计量
+$$
+\hat{\tau}_\text{IPW}^\ast=n^{-1}\sum_{i=1}^{n}\left[\frac{D_iY_i}{{p}(X_i)}-\frac{(1-D_i)Y_i}{1-{p}(X_i)}\right]
+$$
+根据共同支撑域假设, 存在$0<\eta<1$使得对于任意$x\in\mathcal{X}$都有
+$$
+\begin{equation}
+  \eta\leq p(x)\leq 1-\eta \tag{C.11}
+\end{equation}
+$$
+根据SUTVA和无混淆情形可知
+$$
+\mathbb{E}[\hat{\tau}^\ast_\text{IPW}]=\mathbb{E}[Y_i(1)-Y_i(0)]
+$$
+由此可知理想IPW估计量是无偏的.
+
+进一步, 为了分析$\hat{\tau}_\text{IPW}^\ast$的方差, 可以选取$c(x)$使得以下分解成立
+$$
+\begin{align}
+\begin{split}
+Y_i(0)&=c(X_i)-[1-p(X_i)]\tau(X_i)+e_i(0),\quad \mathbb{E}[e_i(0)|X_i]=0 \\
+Y_i(1)&=c(X_i)+p(X_i)\tau(X_i)+e_i(1),\quad \mathbb{E}[e_i(1)|X_i]=0
+\end{split}
+\tag{C.12}
+\end{align}
+$$
+并且还假设$\mathrm{var}[e_i(d)|X_i=x]=\sigma^2(x)$不依赖于处置状态$d$, 于是
+$$
+\begin{align*}
+n\mathrm{var}(\hat{\tau}_\text{IPW}^\ast)=\mathbb{E}\left[\frac{c^2(X_i)}{p(X_i)(1-p(X_i))}\right]+\mathrm{var}[\tau(X_i)]+\mathbb{E}\left[\frac{\sigma^2(X_i)}{p(X_i)(1-p(X_i))}\right]
+\end{align*}
+$$
+综上可知, 当$n\to\infty$时有
+$$
+\sqrt{n}\left(\hat{\tau}_\text{IPW}^\ast-\tau\right)\xrightarrow{d} \mathcal{N}(0,V_\text{IPW}^\ast)
+$$
+其中
+$$
+V_\text{IPW}^\ast=\mathbb{E}\left[\frac{c^2(X_i)}{p(X_i)(1-p(X_i))}\right]+\mathrm{var}[\tau(X_i)]+\mathbb{E}\left[\frac{\sigma^2(X_i)}{p(X_i)(1-p(X_i))}\right]
+$$
+根据式(C.8})可知
+$$
+\begin{equation}
+  V_\text{IPW}^\ast=V_\text{AGG}+\mathbb{E}\left[\frac{c^2(X_i)}{p(X_i)(1-p(X_i))}\right] \tag{C.13}
+\end{equation}
+$$
+由此可见, 除非$c(x)$处处为0, 否则理想IPW估计量的渐近方差总大于AGG估计量的. 事实上, AGG估计量$\hat{\tau}_\text{AGG}$是IPW估计量的特例, 只需在式(\ref{eq11.11})中令$\hat{p}(x)=n_{x1}/n_1$即可.
+
+综上可知, $\hat{\tau}_\text{AGG}$作为一致性的可行IPW估计量, 它表现得总比理想IPW估计量更好, 这是因为估计得到的倾向得分修正了$D_i$抽样分布的局部变异性, 也即它考虑每组实际接受处置的个体数量.
+
+现在来看IPW和线性回归模型的关系, 在经典线性回归分析中, 可以写出
+$$
+Y_i\sim X_i'\beta+D_i\tau
+$$
+来估计非随机化的处置$D_i$的因果效应, 具体需要用到OLS. 根据前面章节的讨论, $\tau$是控制了$X_i$后$D_i$的因果效应 (ATE而非ATT).
+
+值得注意的是, 如果线性回归模型是误设的, 那么没有理由认为$\hat{\tau}_\text{OLS}$​会收敛到一个可以被解释为因果效应的值, 而只要倾向得分的估计是正确的, IPW在无混淆情形(C.9)仍是ATE的一致估计量.
+
+### 双重稳健估计
+
+同样保持SUTVA, 无混淆情形及共同支撑域假设不变, 如果令
+$$
+\begin{align*}
+\mu_{0}(x)&=\mathbb{E}[Y_i|X_i=x,D_i=0] \\
+\mu_{1}(x)&=\mathbb{E}[Y_i|X_i=x,D_i=1]
+\end{align*}
+$$
+那么ATE可以表示为$\tau=\mathbb{E}[\mu_{1}(x)-\mu_{0}(x)]$, 我们可以用参数或者非参数方法得到$\mu_{0}(x)$和$\mu_{1}(x)$的一致估计量, 于是$\tau$的回归估计量为
+$$
+\hat{\tau}_\text{REG}=n^{-1}\sum_{i=1}^{n}\,[\hat{\mu}_{1}(X_i)-\hat{\mu}_{0}(X_i)]
+$$
+与之前类似, 如果DGP是线性的, 那么$\hat{\mu}_{d}(x)$可由OLS得到.
+
+由于IPW估计量的一致性依赖于倾向得分估计的正确性, REG估计量的一致性依赖于模型设定, 我们可以将这两个估计量结合为增广IPW估计量
+$$
+\hat{\tau}_\text{AIPW}=n^{-1}\sum_{i=1}^{n}\left[\hat{\mu}_{1}(X_i)-\hat{\mu}_{0}(X_i)+D_i\frac{Y_i-\hat{\mu}_{1}(X_i)}{\hat{p}(X_i)}-(1-D_i)\frac{Y_i-\hat{\mu}_{0}(X_i)}{1-\hat{p}(X_i)}\right]
+$$
+可以证明, 只要$\hat{p}(X_i)$和$\hat{\mu}_{d}(X_i)$中有一个是一致估计量, 那么$\hat{\tau}_\text{AIPW}$也是一致的, 表明AIPW估计量具有 (弱的)双重稳健性.
+
+注意, 双重稳健的AIPW估计量只保证了一致性, 但通常我们还关心收敛率和置信区间, 并且依赖于机器学习的现代统计模型通常要同时得到$\mu_d(x)$和$p(x)$​的一致估计量, 因此AIPW估计量可能并不是那么有用.
+
+> 无论是PSM、AGG、IPW还是双重稳健的AIPW, 都是基于SUTVA、无混淆情形和共同支撑域假设的估计方法, 它们无法解决由于不可观测异质性带来的偏误.
 
 ### 参考文献
 
