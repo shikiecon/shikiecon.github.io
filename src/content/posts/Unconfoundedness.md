@@ -57,7 +57,53 @@ $$
 $$
 ^\dagger\hat{\tau}=n_1^{-1}\sum_{i\in I_1\cap S_p}\left(Y_i-\sum_{j\in I_0\cap S_p}w_{ij}Y_j\right)
 $$
-其中$n_1$为处置组样本个数, $I_0$和$I_1$分别为控制组和处置组, $i$和$j$分别代表个体位于处置组和控制组, $S_p$为共同支撑域, $w_{ij}$为匹配权重 (不同匹配方法的权重不同).
+其中$n_1$为处置组样本个数, $I_0$和$I_1$分别为控制组和处置组, $i$和$j$分别代表个体位于处置组和控制组, $S_p$为共同支撑域, $w_{ij}$​为匹配权重 (不同匹配方法的权重不同).
+
+### 加总组别估计
+
+这里介绍的加总组别估计(Aggregating Group-wise, AGG)和下一节的IPW殊途同归, 只是AGG适用于离散型协变量. 无混淆情形假设(C.5)变为
+$$
+\begin{equation}
+  \{Y_i(0),Y_i(1)\}\perp D_i\,|\, X_i=x,\quad \forall x\in\mathcal{X} \tag{C.6}
+\end{equation}
+$$
+此时
+$$
+\tau(x)=\mathbb{E}[Y_i(1)-Y_i(0)|X_i=x]
+$$
+类似地, 在SUTVA和无混淆情形下, 上式可以被识别为
+$$
+\tau(x)=\mathbb{E}[Y_i|D_i=1,X_i=x]-\mathbb{E}[Y_i|D_i=0,X_i=x]
+$$
+于是可以定义加总组别估计量
+$$
+\begin{align*}
+\hat{\tau}_\text{AGG}&=\sum_{x\in\mathcal{X}}\frac{n_x}{n}\hat{\tau}(x) \\
+\hat{\tau}_\text{AGG}(x)&=n_{x1}^{-1}\sum_{X_i=x,D_i=1}Y_i-n_{x0}^{-1}\sum_{X_i=x, D_i=0}Y_i
+\end{align*}
+$$
+其中$n_x=|\{i:X_i=x\}|$, $n_{xd}=|\{i:X_i=x,D_i=d\}|$. 进一步可知
+$$
+\begin{equation}
+  \sqrt{n_x}[\hat{\tau}(x)-\tau(x)]\xrightarrow{d} \mathcal{N}\left(0,\frac{\mathrm{var}[Y_i(0)|X_i=x]}{1-p(x)}+\frac{\mathrm{var}[Y_i(1)|X_i=x]}{p(x)}\right) \tag{C.7}
+\end{equation}
+$$
+如果$\mathrm{var}[Y_i(d)|X_i=x]=\sigma^2(x)$不依赖于处置状态$d$, 那么
+$$
+\sqrt{n_x}[\hat{\tau}(x)-\tau(x)]\xrightarrow{d} \mathcal{N}\left[0,\frac{\sigma^2(x)}{p(x)(1-p(x))} \right]
+$$
+注意到$\hat{\tau}_\text{AGG}=\sum_{x\in\mathcal{X}}\hat{\pi}(x)\hat{\tau}(x)$, $\hat{\pi}(x)=n_x/n$, 经过一些代数运算后最终得到
+$$
+\sqrt{n}(\hat{\tau}_\text{AGG}-\tau)\xrightarrow{d} \mathcal{N}(0,V_\text{AGG})
+$$
+其中
+$$
+\begin{align}
+V_\text{AGG}&=\mathrm{var}[\tau(X_i)]+\sum_{x\in\mathcal{X}}\pi^2(x)\frac{1}{\pi(x)}\frac{\sigma^2(x)}{p(x)(1-p(x))} \nonumber \\
+&=\mathrm{var}[\tau(X_i)]+\mathbb{E}\left[\frac{\sigma^2(X_i)}{p(X_i)(1-p(X_i))}\right] \tag{C.8}
+\end{align}
+$$
+并且$\pi(x)=\mathbb{P}[X_i=x]$.
 
 ### 参考文献
 
