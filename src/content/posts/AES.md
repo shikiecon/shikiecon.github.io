@@ -18,7 +18,7 @@ AES是一种分块加密算法, ECB模式需要严格将加密的信息按128比
 [^3]: 除了ECB模式外, AES算法中还包括CBC、CTR等模式, 具体见[Wikipedia](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard).
 [^2]: 如果要加密的信息不是128bits的整数倍, 那么需要在结尾补齐，补齐方法包括PKCS7、PKCS5、Zeros等. 
 
-AES算法运行在一个$4\times 4$矩阵上, 该矩阵称为 **体(state)**, 每个矩阵的元素是$1$个字节, 也即
+AES算法运行在一个$4\times 4$状态矩阵上, 每个矩阵的元素是$1$个字节, 也即
 $$
 \begin{array}{|c|c|c|c|}
 \hline
@@ -49,7 +49,7 @@ AES加密步骤包括 **字节替换(SubBytes)**、**行移位(RowShifts)**、**
 
 首先将明文和密钥储存在$4\times 4$矩阵中进行异或运算,[^5]称为初始替代, 也即
 
-[^5]: 将16进制码转化为2进制数再进行异或, 然后将新得到的2进制数再转化为16进制.
+[^5]: 将16进制码转化为2进制数进行异或, 然后将新得到的2进制数再转化为16进制.
 
 $$
 \begin{array}{|c|c|c|c|}
@@ -74,4 +74,14 @@ $$
 \end{array}
 $$
 
-然后开始进行第一轮加密的字节替换, 查阅FIPS 197可知
+然后开始进行第一轮加密的字节替换, 这需要用到[FIPS 197](https://doi.org/10.6028/NIST.FIPS.197-upd1)中的S盒, 例如元素`5D`被替换为S盒中第5行第D列的元素`4C`, 由此得到新的状态矩阵
+$$
+\begin{array}{|c|c|c|c|}
+\hline
+59 &59&2\mathrm{C}&\mathrm{CF}\\ \hline
+\mathrm{F}2&\mathrm{FC}&\mathrm{FE}&4\mathrm{C} \\ \hline
+\mathrm{FE}&12&6\mathrm{F}&\mathrm{B1} \\ \hline
+1\mathrm{A}&\mathrm{CA}&\mathrm{6F}&20\\ \hline
+\end{array}
+$$
+接下来是行移位, 
