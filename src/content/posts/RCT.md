@@ -72,4 +72,66 @@ $$
 
 ### 线性回归模型与RCT的关系
 
-初级的计量经济学早已讲授过线性回归模型，这里将介绍它与RCT的关系. 
+初级的计量经济学早已讲授过线性回归模型，这里将介绍它与RCT的关系. 仍考虑两期数据, 假设 **数据生成过程(DGP)** 为
+$$
+\begin{equation}
+  Y_i(d)=c_{(d)}+X_i'\beta_{(d)}+e_i(d)
+\end{equation}
+$$
+并且满足$\mathbb{E}[e_i(d)|X_i]=0$且$\mathrm{var}[e_i(d)|X_i]=\sigma^2$. 简单起见, 我们还假设
+$$
+\begin{equation}
+  \mathbb{P}[D_i=0]=\mathbb{P}[D_i=1]=\frac{1}{2}
+\end{equation}
+$$
+此时
+$$
+\begin{align*}
+V_\text{DM}&=\mathrm{var}[Y_i(0)]/\mathbb{P}[D_i=0]+\mathrm{var}[Y_i(1)]/\mathbb{P}[D_i=1] \\
+&=4\sigma^2+||\beta_{(0)}+\beta_{(1)}||_A^2+||\beta_{(0)}-\beta_{(1)}||_A^2
+\end{align*}
+$$
+最后, 我们还可以不失一般性地假设$\mathbb{E}[X_i]=0$. 另一方面, 根据DGP可知ATE可以表示为
+$$
+\tau=\mathbb{E}[Y_i(1)-Y_i(0)]=c_{(1)}-c_{(0)}+\mathbb{E}[X_i]\cdot[\beta_{(1)}-\beta_{(0)}]
+$$
+自然而然, 可以得到$\tau$的OLS估计量
+$$
+\hat{\tau}_\text{OLS}=\hat{c}_{(1)}-\hat{c}_{(0)}+\bar{X}'[\hat{\beta}_{(1)}-\hat{\beta}_{(0)}]
+$$
+这里的$\bar{X}=n^{-1}\sum_{i=1}^{n}X_i$. 进一步可以证明
+$$
+\sqrt{n}(\hat{\tau}_\text{OLS}-\tau)\xrightarrow{d} \mathcal{N}(0,V_\text{OLS})
+$$
+并且$V_\text{DM}=V_\text{OLS}+||\beta_{(0)}+\beta_{(1)}||_A^2$​, 可见使用OLS减少了线性DGP情况下的渐近误差. 这一结论毫不令人惊讶, 因为我们已经假设了DGP是线性的.
+
+进一步, 对于任意DGP
+$$
+Y_i(d)=\mu_{d}(X_i)+e_i(d)
+$$
+仍然假定$\mathbb{E}[e_i(d)|X_i]=0$, $\mathrm{var}[e_i(d)|X_i]=\sigma^2$, $\mathbb{P}[D_i=1]=1/2$. 易知
+$$
+\sqrt{n}(\hat{\tau}_\text{DM}-\tau)\xrightarrow{d} \mathcal{N}(0,V_\text{DM2})
+$$
+$
+其中
+$
+$$
+V_\text{DM2}=4\sigma^2+2\mathrm{var}[\mu_{0}(X_i)]+2\mathrm{var}[\mu_{1}(X_i)]
+$$
+另一方面, 考虑如下OLS估计量
+$$
+\begin{align*}
+\hat{\tau}_\text{OLS2}&=n^{-1}\sum_{i=1}^{n}\left[\hat{\mu}_{1}(X_i)-\hat{\mu}_{0}(X_i)\right] \\
+\hat{\mu}_{d}(X_i)&=\hat{c}_{(d)}+X_i'\hat{\beta}_{(d)}
+\end{align*}
+$$
+可以证明
+$$
+\sqrt{n}(\hat{\tau}_\text{OLS2}-\tau)\xrightarrow{d} \mathcal{N}(0,V_\text{OLS2})
+$$
+并且$V_\text{DM2}=V_\text{OLS2}+||\beta^\ast_{(0)}+\beta^\ast_{(1)}||^2_A$, 这里的$\beta^\ast_{(d)}$满足
+$$
+[c^\ast_{(d)},\beta^\ast_{(d)}]=\arg\min_{c,\beta}\mathbb{E}[(Y_i(d)-X_i'\beta-c)^2]
+$$
+换言之, 无论$\mu_d(x)$是否是线性函数, OLS几乎总能减少DM的渐近方差! 这也解释了为何在RCT中使用线性回归模型来推断ATE: **在SUTVA和随机处置指派下, RCT可以正确识别ATE, 并且通过OLS得到的估计量通常比DM得到估计量更加渐近有效.**
