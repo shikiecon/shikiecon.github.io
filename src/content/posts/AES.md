@@ -29,7 +29,7 @@ b_3&b_7&b_{11}&b_{15}  \\
 \hline
 \end{array}
 $$
-AES加密步骤包括 **字节替换(SubBytes)**、**行移位(RowShifts)**、**列混淆(MixColumns) ** 和 **轮密钥加(AddRoundKey)**. 在AES-128中, 需要让明文经过10轮加密, 其中前9轮加密完整经历以上4个步骤, 最后1轮加密不经过列混淆, 而在AES-192和AES-256中, 加密轮数分别扩大为12轮和14轮, 最后1轮加密仍然不经过列混淆.
+AES加密步骤包括 **字节替换(SubBytes)**, **行移位(RowShifts)**, **列混淆(MixColumns) ** 和 **轮密钥加(AddRoundKey)**. 在AES-128中, 需要让明文经过10轮加密, 其中前9轮加密完整经历以上4个步骤, 最后1轮加密不经过列混淆, 而在AES-192和AES-256中, 加密轮数分别扩大为12轮和14轮, 最后1轮加密仍然不经过列混淆.
 
 考虑如下明文
 
@@ -73,9 +73,41 @@ m(x)=x^8+x^4+x^3+x+1
 $$
 如果令多项式$b(x)$和$c(x)$分别表示字节$b$和$c$, 那么$b\bullet c$表示
 $$
-b(x)c(x)\quad \mathrm{mod}\,m(x)
+b(x)c(x)\quad \mathrm{mod}\,\, m(x)
 $$
-例如, 
+例如, $\{57\}\bull\{13\}=\{\mathrm{FE}\}$, 这是因为
+$$
+(x^6+x^4+x^2+x+1)(x^4+x+1)=x^{10}+x^{8}+x^7+x^3+1
+$$
+以及
+$$
+x^{10}+x^{8}+x^7+x^3+1\quad\mathrm{mod}\,\, x^8+x^4+x^3+x+1=x^7+x^6+x^5+x^4+x^3+x^2+x
+$$
+进一步, 如果$c(x)=x$, 也即$c=\{02\}$, 那么乘积$b\bull \{02\}$可以表示为$\mathrm{XTIMES}(b)$, 表示为
+$$
+\mathrm{XTIMES}(b)=\begin{cases}
+\{b_6\,b_5\,b_4\,b_3\,b_2\,b_1\,b_0\,0\}, &b_7=0 \\
+\{b_6\,b_5\,b_4\,b_3\,b_2\,b_1\,b_0\,0\}\oplus\{00011011\}, &b_7=1
+\end{cases}
+$$
+于是
+$$
+\begin{align}
+\{57\}\bull\{01\}&=\{57\} \\
+\{57\}\bull\{02\}&=\mathrm{XTIMES}(\{57\})=\{\mathrm{AE}\} \\
+\{57\}\bull\{04\}&=\mathrm{XTIMES}(\{\mathrm{AE}\})=\{\mathrm{47}\} \\
+\{57\}\bull\{08\}&=\mathrm{XTIMES}(\{\mathrm{47}\})=\{\mathrm{8E}\} \\
+\{57\}\bull\{10\}&=\mathrm{XTIMES}(\{\mathrm{8E}\})=\{\mathrm{07}\} 
+\end{align}
+$$
+从而
+$$
+\begin{align}
+\{57\}\bull\{13\}&=\{57\}\bull(\{01\}\oplus\{02\}\oplus\{10\}) \\
+&=\{57\}\oplus\{\mathrm{AE}\}\oplus\{07\} \\
+&=\{\mathrm{FE}\}
+\end{align}
+$$
 
 ### 加密过程
 
@@ -132,7 +164,7 @@ $$
 03&01&01&02\\ \hline
 \end{array}
 $$
-我们记状态矩阵(A.3)的每一列为$[s_{0,c},s_{1,c},s_{2,c},s_{3,c}]'$, 其中$0\leq c<4$. 经上述固定矩阵左乘后的新列向量为
+我们记状态矩阵`(A.3)`的每一列为$[s_{0,c},s_{1,c},s_{2,c},s_{3,c}]'$, 其中$0\leq c<4$. 经上述固定矩阵左乘后的新列向量为
 $$
 \begin{array}{|c|}
 \hline
@@ -146,7 +178,7 @@ s_{3,c}' \\ \hline
 01&02&03&01 \\ \hline
 01&01&02&03 \\ \hline
 03&01&01&02\\ \hline
-\end{array}\,\,\bigotimes\,\,\begin{array}{|c|}
+\end{array}\,\,\,\begin{array}{|c|}
 \hline
 s_{0,c} \\ \hline
 s_{1,c} \\ \hline
@@ -163,4 +195,14 @@ s_{2,c}'&=s_{0,c}\oplus s_{1,c}\oplus(\{02\}\bullet s_{2,c})\oplus (\{03\}\bulle
 s_{3,c}'&=(\{03\}\bullet s_{0,c})\oplus s_{1,c}\oplus s_{2,c}\oplus (\{02\}\bullet s_{3,c})
 \end{align*}
 $$
- 这里的乘法运算$\cdot$定义在Galois域$\mathrm{GF}(2^8)$上
+ 这里的乘法运算$\bull$定义在Galois域$\mathrm{GF}(2^8)$上, 经列混淆后的状态矩阵又变为
+$$
+\begin{array}{|c|c|c|}
+\hline
+& & & \\ \hline
+& & & \\ \hline
+& & & \\ \hline
+& & & \\ \hline
+\end{array}
+$$
+其中元素$s_{0,0}'$的计算方式为
