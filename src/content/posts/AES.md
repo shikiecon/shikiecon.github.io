@@ -111,6 +111,7 @@ $$
 \end{align*}
 $$
 
+
 ### 加密过程
 
 **First: 初始替代.** 将明文和密钥存储在$4\times 4$矩阵中进行加法运算, 也即
@@ -388,4 +389,26 @@ $$
 \mathrm{77}&\mathrm{c7} &\mathrm{c7} & \mathrm{c9}\\ \hline
 \end{array} \tag{A.10}
 $$
-对状态矩阵`(A.10)`行移位和字节替换即可得到`Round 8`.
+对状态矩阵`(A.10)`进行逆行移位和逆字节替换即可得到`Round 8`, 也即
+$$
+\begin{array}{|c|c|c|c|}
+\hline
+\mathrm{50}&\mathrm{08} &\mathrm{e6} & \mathrm{ff}\\ \hline
+\mathrm{60}&\mathrm{41} &\mathrm{67} & \mathrm{27}\\ \hline
+\mathrm{e0}&\mathrm{8f} &\mathrm{fc} & \mathrm{a6} \\ \hline
+\mathrm{77}&\mathrm{c7} &\mathrm{c7} & \mathrm{c9}\\ \hline
+\end{array}\,\,{\Longrightarrow}\,\, \begin{array}{|c|c|c|c|}
+\hline
+\mathrm{50}&\mathrm{08} &\mathrm{e6} & \mathrm{ff}\\ \hline
+\mathrm{27}&\mathrm{60} &\mathrm{41} & \mathrm{67}\\ \hline
+\mathrm{fc}&\mathrm{a6} &\mathrm{e0} & \mathrm{8f} \\ \hline
+\mathrm{c7}&\mathrm{c7} &\mathrm{c9} & \mathrm{77}\\ \hline
+\end{array}\,\,\Longrightarrow\,\,\begin{array}{|c|c|c|c|}
+\hline
+\mathrm{6c}&\mathrm{bf} &\mathrm{f5} & \mathrm{7d}\\ \hline
+\mathrm{3d}&\mathrm{90} &\mathrm{f8} & \mathrm{0a}\\ \hline
+\mathrm{55}&\mathrm{c5} &\mathrm{a0} & \mathrm{73} \\ \hline
+\mathrm{31}&\mathrm{31} &\mathrm{12} & \mathrm{02}\\ \hline
+\end{array} \tag{A.11}
+$$
+之后的第$3-10$轮的解密流程与此相同, 不再赘述.
