@@ -389,7 +389,7 @@ $$
 \mathrm{77}&\mathrm{c7} &\mathrm{c7} & \mathrm{c9}\\ \hline
 \end{array} \tag{A.10}
 $$
-对状态矩阵`(A.10)`进行逆行移位和逆字节替换即可得到`Round 8`, 也即
+对状态矩阵`(A.10)`进行逆行移位和逆字节替换即可得到`Round 8`
 $$
 \begin{array}{|c|c|c|c|}
 \hline
