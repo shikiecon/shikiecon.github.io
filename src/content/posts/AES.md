@@ -92,21 +92,21 @@ $$
 $$
 于是
 $$
-\begin{align}
+\begin{align*}
 \{57\}\bull\{01\}&=\{57\} \\
 \{57\}\bull\{02\}&=\mathrm{XTIMES}(\{57\})=\{\mathrm{ae}\} \\
 \{57\}\bull\{04\}&=\mathrm{XTIMES}(\{\mathrm{ae}\})=\{\mathrm{47}\} \\
 \{57\}\bull\{08\}&=\mathrm{XTIMES}(\{\mathrm{47}\})=\{\mathrm{8e}\} \\
 \{57\}\bull\{10\}&=\mathrm{XTIMES}(\{\mathrm{8e}\})=\{\mathrm{07}\} 
-\end{align}
+\end{align*}
 $$
 从而
 $$
-\begin{align}
+\begin{align*}
 \{57\}\bull\{13\}&=\{57\}\bull(\{01\}\oplus\{02\}\oplus\{10\}) \\
 &=\{57\}\oplus\{\mathrm{AE}\}\oplus\{07\} \\
 &=\{\mathrm{fe}\}
-\end{align}
+\end{align*}
 $$
 
 ### 加密过程
@@ -119,7 +119,7 @@ $$
 68&75&62&64 \\ \hline
 65&72&6\mathrm{c}&65 \\ \hline
 20&65&6\mathrm{f}&64\\ \hline
-\end{array}\,\, +\,\,
+\end{array}\,\, \oplus \,\,\,
 \begin{array}{|c|c|c|c|}
 \hline
 41 &65&6\mathrm{f}&30 \\ \hline
@@ -207,13 +207,13 @@ $$
 $$
 其中元素$s_{0,0}'$的计算方式为
 $$
-\begin{align}
+\begin{align*}
 s_{0,0}'&=(\{02\}\bull\{59\})\oplus(\{03\}\bull\{\mathrm{fc}\})\oplus\{\mathrm{6f}\}\oplus\{20\} \\
 &=\{\mathrm{b2}\}\oplus\{\mathrm{1f}\}\oplus\{\mathrm{6f}\}\oplus\{\mathrm{20}\} \\
 &=\{\mathrm{e2}\}
-\end{align}
+\end{align*}
 $$
-**Fourth: 轮密钥加.** 记初始密钥矩阵为$(w[0],w[1],w[2],w[3])$, 其中
+**Fourth: 轮密钥加.** 现在需要使用轮密钥矩阵与状态矩阵`(A.4)`进行异或操作, 这个轮密钥矩阵是什么? 记初始密钥矩阵为$(w[0],w[1],w[2],w[3])$, 其中
 $$
 \begin{align*}
 w[0]&=(41,\, 6\mathrm{c},\, 69,\, 63)^\top \\
@@ -222,3 +222,69 @@ w[2]&=(6\mathrm{f},\,\mathrm{6e},\,\mathrm{6a},\,69)^\top \\
 w[3]&=(30,\,39,\,33,\,30)^\top
 \end{align*}
 $$
+再设$l$为轮数, 则轮密钥矩阵为$(w[4l],w[4l+1],w[4l+2],w[4l+3])$, 并且
+$$
+w[j]=\begin{cases}
+w[j-4]\oplus w[j-1],& j\mod4\neq 0 \\
+w[j-4]\oplus g(w[j-1]),& j\mod4=0
+\end{cases}
+$$
+这里的函数$g$使得$w[j-1]$经过字循环、字节替换和轮常量异或. 具体而言
+
+- 字循环: 将$w[j-1]$中的字节循环左移$1$个单位;
+
+- 字节替换: 将字循环得到的列向量根据S盒作替换;
+
+- 轮常量异或: 将字节替换得到的列向量与轮常量$\mathrm{Rcon}[l]$进行异或, 这里的$l$​为轮数.[^5]
+
+  [^5]: 轮常量是一个固定的向量, 具体可见[FIPS 197](https://doi.org/10.6028/NIST.FIPS.197-upd1).
+
+现在我们需要得到第$1$轮的轮密钥矩阵$(w[4],w[5],w[6],w[7])$. 首先计算得到$g(w[3])=(13,\,\mathrm{c}3,\,04,\,04)^\top$,  从而有
+$$
+w[4]=w[0]\oplus g(w[3])=(\mathrm{52},\,\mathrm{af},\,\mathrm{6d},\,67)^\top
+$$
+于是
+$$
+\begin{align}
+w[5]&=w[1]\oplus w[4]=(\mathrm{37},\,\mathrm{8f},\,\mathrm{26},\,12)^\top \\
+w[6]&=w[2]\oplus w[5]=(\mathrm{58},\,\mathrm{e1},\,\mathrm{4c},\,\mathrm{7b})^\top \\
+w[7]&=w[3]\oplus w[6]=(\mathrm{68},\,\mathrm{d8},\,\mathrm{7f},\,\mathrm{4b})^\top
+\end{align}
+$$
+然后将轮密钥矩阵与状态矩阵`(A.4)`进行异或, 得到首轮加密后的状态矩阵
+$$
+\begin{array}{|c|c|c|c|}
+\hline
+\mathrm{e2}&00 &\mathrm{b8} & \mathrm{f5}\\ \hline
+\mathrm{2b}&\mathrm{6c} &67 & 69\\ \hline
+\mathrm{1b}&\mathrm{f0} &\mathrm{c2} &\mathrm{a8} \\ \hline
+38&\mathrm{90} &49 & 74\\ \hline
+\end{array} \,\,\oplus\,\,\, \begin{array}{|c|c|c|c|}
+\hline
+\mathrm{52}&37 &\mathrm{58} & \mathrm{68}\\ \hline
+\mathrm{af}&\mathrm{8f} &\mathrm{e1} & \mathrm{d8}\\ \hline
+\mathrm{6d}&\mathrm{26} &\mathrm{4c} &\mathrm{7f} \\ \hline
+67&\mathrm{12} &\mathrm{7b} & \mathrm{4b}\\ \hline
+\end{array}\,\,=\,\,\,\begin{array}{|c|c|c|c|}
+\hline
+\mathrm{b0}&37 &\mathrm{e0} & \mathrm{9d}\\ \hline
+\mathrm{84}&\mathrm{e3} &86 & \mathrm{b1}\\ \hline
+\mathrm{76}&\mathrm{d6} &\mathrm{8e} &\mathrm{d7} \\ \hline
+\mathrm{5f}&\mathrm{82} &32 & \mathrm{3f}\\ \hline
+\end{array} \tag{A.5}
+$$
+第一轮加密结束, 随后的第二轮至第九轮加密过程完全相同, 只是轮常量随轮数发生变化, 最后一轮除了不进行列混淆外, 其余步骤也与之前相同. 最后, 我们将十轮加密得到的状态矩阵列举如下:
+
+|          |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
+| -------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| Round 1  | b0   | 84   | 76   | 5f   | 37   | e3   | d6   | 82   | e0   | 86   | 8e   | 32   | 9d   | b1   | d7   | 3f   |
+| Round 2  | bb   | e6   | 85   | f2   | 24   | 3d   | 70   | 4a   | ef   | 22   | d8   | a6   | be   | 09   | 58   | 0d   |
+| Round 3  |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
+| Round 4  |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
+| Round 5  |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
+| Round 6  |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
+| Round 7  |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
+| Round 8  |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
+| Round 9  |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
+| Round 10 |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
+
