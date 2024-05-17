@@ -1,7 +1,7 @@
 ---
 title: 无混淆情形
 published: 2024-05-17
-tags: [计量经济学, 因果推断]
+tags: [因果推断]
 category: 经济学
 draft: false
 ---
