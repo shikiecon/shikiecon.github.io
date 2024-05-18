@@ -90,7 +90,7 @@ $$
 $$
 从而$\{57\}\bull\{13\}=\{57\}\bull(\{01\}\oplus\{02\}\oplus\{10\}) =\{57\}\oplus\{\mathrm{ae}\}\oplus\{07\}=\{\mathrm{fe}\}$. 
 
-在AES算法的列混淆步骤中, 需要用到矩阵乘法运算, 如果我们有一个输入矩阵 $\begin{array}{|c|c|c|c|}\hline b_0&b_1&b_2&b_3 \\\hline\end{array}$ , 使用以下固定的$4\times 4$矩阵左乘它可以得到输出矩阵$\begin{array}{|c|c|c|c|}\hline d_0&d_1&d_2&d_3 \\\hline\end{array}$, 也即
+在AES算法的列混淆步骤中, 需要用到矩阵乘法运算, 如果我们有一个输入矩阵 $\begin{array}{|c|c|c|c|}\hline b_0&b_1&b_2&b_3 \\\hline\end{array}$ , 使用以下固定的$4\times 4$矩阵左乘它可以得到输出矩阵 $\begin{array}{|c|c|c|c|}\hline d_0&d_1&d_2&d_3 \\\hline\end{array}$ , 也即
 $$
 \begin{array}{|c|}
 \hline
@@ -216,25 +216,25 @@ $$
 
  记初始密钥矩阵为的第$1-4$列分别为$w[0]$, $w[1]$, $w[2]$以及$w[3]$, 其中
 $$
-w[0]=\,\,\,\begin{array}{|c|}
+w[0]=\,\,\begin{array}{|c|}
 \hline
 41 \\ \hline
 \mathrm{6c} \\ \hline
 69 \\ \hline
 63 \\ \hline
-\end{array}\,,\quad w[1]=\,\,\,\begin{array}{|c|}
+\end{array}\,,\quad w[1]=\,\,\begin{array}{|c|}
 \hline
 65 \\ \hline
 \mathrm{5f} \\ \hline
 \mathrm{4b} \\ \hline
 75 \\ \hline
-\end{array}\,,\quad w[2]=\,\,\,\begin{array}{|c|}
+\end{array}\,,\quad w[2]=\,\,\begin{array}{|c|}
 \hline
 \mathrm{6f} \\ \hline
 \mathrm{6e} \\ \hline
 \mathrm{6a} \\ \hline
 \mathrm{69} \\ \hline
-\end{array}\,,\quad w[3]=\,\,\,\begin{array}{|c|}
+\end{array}\,,\quad w[3]=\,\,\begin{array}{|c|}
 \hline
 30 \\ \hline
 39 \\ \hline
@@ -257,19 +257,45 @@ $$
 
 - 轮常量异或: 将字节替换得到的列向量与轮常量$\mathrm{Rcon}[l]$进行异或, 这里的$l$​为轮数.[^6]
 
-  [^6]: 每轮加密需要的轮常量已由[FIPS 197](https://doi.org/10.6028/NIST.FIPS.197-upd1)给定, $l=1$时的轮常量为$\mathrm{Rcon}[1]=(01,\,00,\,00,\,00)^\top$.
+  [^6]: 每轮加密需要的轮常量已由[FIPS 197](https://doi.org/10.6028/NIST.FIPS.197-upd1)给定, $l=1$时的轮常量为$\mathrm{Rcon}[1]=\,\,\begin{array}{|c|c|c|c|}\hline 01&00&00&00 \\\hline\end{array}$.
 
-现在我们需要得到第$1$轮的轮密钥矩阵分块$w[4]$, $w[5]$, $w[6]$以及$w[7]$. 首先计算得到$g(w[3])=(13,\,\mathrm{c}3,\,04,\,04)^\top$,  从而有
+现在我们需要得到第$1$轮的轮密钥矩阵分块$w[4]$, $w[5]$, $w[6]$以及$w[7]$. 首先计算得到
 $$
-w[4]=w[0]\oplus g(w[3])=(\mathrm{52},\,\mathrm{af},\,\mathrm{6d},\,67)^\top
+g(w[3])=\,\,\begin{array}{|c|}
+\hline
+13 \\ \hline
+\mathrm{c3} \\ \hline
+04 \\ \hline
+04 \\ \hline
+\end{array}\Longrightarrow w[4]=w[0]\oplus g(w[3])=\,\,\begin{array}{|c|}
+\hline
+52 \\ \hline
+\mathrm{af} \\ \hline
+\mathrm{6d} \\ \hline
+67 \\ \hline
+\end{array}
 $$
 于是
 $$
-\begin{align*}
-w[5]&=w[1]\oplus w[4]=(\mathrm{37},\,\mathrm{f0},\,\mathrm{26},\,12)^\top \\
-w[6]&=w[2]\oplus w[5]=(\mathrm{58},\,\mathrm{9e},\,\mathrm{4c},\,\mathrm{7b})^\top \\
-w[7]&=w[3]\oplus w[6]=(\mathrm{68},\,\mathrm{a7},\,\mathrm{7f},\,\mathrm{4b})^\top
-\end{align*}
+w[5]=\,\,\begin{array}{|c|}
+\hline
+37 \\ \hline
+\mathrm{f0} \\ \hline
+26 \\ \hline
+12 \\ \hline
+\end{array}\,,\quad w[6]=\,\,\begin{array}{|c|}
+\hline
+58 \\ \hline
+\mathrm{9e} \\ \hline
+\mathrm{4c} \\ \hline
+\mathrm{7b} \\ \hline
+\end{array}\,,\quad w[7]=\,\,\begin{array}{|c|}
+\hline
+68 \\ \hline
+\mathrm{a7} \\ \hline
+\mathrm{7f} \\ \hline
+\mathrm{4b} \\ \hline
+\end{array}
 $$
 然后进行轮密钥加, 也即让轮密钥矩阵与状态矩阵`(A.4)`进行异或, 得到首轮加密后的状态矩阵
 $$
