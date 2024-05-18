@@ -354,7 +354,7 @@ $$
 \mathrm{4a}&\mathrm{33} &\mathrm{2c} & \mathrm{c0}\\ \hline
 \end{array}\,\,=\,\,\begin{array}{|c|c|c|c|}
 \hline
-\mathrm{93}&\mathrm{cc} &\mathrm{fd} & \mathrm{9a}\\ \hline
+\mathrm{9e}&\mathrm{cc} &\mathrm{fd} & \mathrm{9a}\\ \hline
 \mathrm{64}&\mathrm{4d} &\mathrm{d9} & \mathrm{b7}\\ \hline
 \mathrm{19}&\mathrm{fa} &\mathrm{40} & \mathrm{ee} \\ \hline
 \mathrm{47}&\mathrm{d8} &\mathrm{d9} & \mathrm{16}\\ \hline
@@ -364,7 +364,7 @@ $$
 $$
 \begin{array}{|c|c|c|c|}
 \hline
-\mathrm{93}&\mathrm{cc} &\mathrm{fd} & \mathrm{9a}\\ \hline
+\mathrm{9e}&\mathrm{cc} &\mathrm{fd} & \mathrm{9a}\\ \hline
 \mathrm{64}&\mathrm{4d} &\mathrm{d9} & \mathrm{b7}\\ \hline
 \mathrm{19}&\mathrm{fa} &\mathrm{40} & \mathrm{ee} \\ \hline
 \mathrm{47}&\mathrm{d8} &\mathrm{d9} & \mathrm{16}\\ \hline
