@@ -387,7 +387,7 @@ $$
 $$
 \begin{array}{|c|c|c|c|}
 \hline
-\mathrm{a8}&\mathrm{a2} &\mathrm{9e} & \mathrm{75}\\ \hline
+\mathrm{a8}&\mathrm{a2} &\mathrm{9e} & \mathrm{75}\\ \hline 
 \mathrm{8b}&\mathrm{4c} &\mathrm{93} & \mathrm{e3}\\ \hline
 \mathrm{35}&\mathrm{bd} &\mathrm{ed} &\mathrm{ad} \\ \hline
 \mathrm{bb}&\mathrm{8a} &\mathrm{5e} & \mathrm{cb}\\ \hline
@@ -483,7 +483,7 @@ $$
 
 > 如果$j$是$6$的倍数. 则$w[j]=w[j-6]\oplus g(w[j-1])$; 如果$j$不是$6$的倍数, 则$w[j]=w[j-6]\oplus w[j-1]$. 其中, $g$函数表示将$w[j-1]$按先后顺序进行字循环、字节替换以及与$\mathrm{Rcon}[j/6]$异或.
 
-由于AES-192最大将初始密钥扩张至$w[51]$, 因此AES-192的密钥扩张只需用到8个轮常量.
+由于AES-192最大将初始密钥扩张至$w[51]$, 因此密钥扩张只需用到8个轮常量.
 
 在AES-256中, 加密轮数变为14, 初始密钥矩阵变为$4\times 8$矩阵, 每列为$w[j]$, $j=0,1,2,3,4,5,6,7$, 共包含32字节.
 $$
@@ -500,4 +500,4 @@ $$
 
 > 如果$j$是$8$的倍数, 则$w[j]=w[j-8]\oplus g(w[j-1])$; 如果$j+4$是$8$的倍数, 那么$w[j]=w[j-8]\oplus s(w[j-1])$; 如果不是以上两种情况, 则$w[j]=w[j-8]\oplus w[j-1]$. 其中, $s$函数表示将$w[j-1]$进行字节替换, $g$函数表示将$w[j-1]$按先后顺序进行字循环、字节替换以及与$\mathrm{Rcon}[j/8]$异或.
 
-从这个角度看, AES-256的密钥扩张只需用到7个轮常量.
+由于AES-256密钥扩张至$w[59]$, 故而只需用到7个轮常量.
