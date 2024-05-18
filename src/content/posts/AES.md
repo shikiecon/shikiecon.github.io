@@ -63,7 +63,7 @@ $$
 $$
 b(x)c(x)\quad \mathrm{mod}\,\, m(x)
 $$
-例如, $\{57\}\bull\{13\}=\{\mathrm{FE}\}$, 这是因为
+例如, $\{57\}\bull\{13\}=\{\mathrm{fe}\}$, 这是因为
 $$
 (x^6+x^4+x^2+x+1)(x^4+x+1)=x^{10}+x^{8}+x^7+x^3+1
 $$
@@ -71,9 +71,7 @@ $$
 $$
 x^{10}+x^{8}+x^7+x^3+1\quad\mathrm{mod}\,\, x^8+x^4+x^3+x+1=x^7+x^6+x^5+x^4+x^3+x^2+x
 $$
-而取模后的多项式对应的二进制为$11111110$, 也即$\mathrm{FE}$.
-
-进一步, 如果$c(x)=x$, 也即$c=\{02\}$, 那么乘积$b\bull \{02\}$可以表示为$\mathrm{XTIMES}(b)$, 表示为
+而取模后的多项式对应的二进制为$\{11111110\}$, 也即十六进制的$\{\mathrm{fe}\}$. 此外, 如果$c(x)=x$, 也即$c=\{02\}$, 那么乘积$b\bull \{02\}$可以表示为$\mathrm{XTIMES}(b)$, 表示为
 $$
 \mathrm{XTIMES}(b)=\begin{cases}
 \{b_6\,b_5\,b_4\,b_3\,b_2\,b_1\,b_0\,0\}, &b_7=0 \\
@@ -90,15 +88,40 @@ $$
 \{57\}\bull\{10\}&=\mathrm{XTIMES}(\{\mathrm{8e}\})=\{\mathrm{07}\} 
 \end{align*}
 $$
-从而
+从而$\{57\}\bull\{13\}=\{57\}\bull(\{01\}\oplus\{02\}\oplus\{10\}) =\{57\}\oplus\{\mathrm{ae}\}\oplus\{07\}=\{\mathrm{fe}\}$. 
+
+在AES算法的列混淆步骤中, 需要用到矩阵乘法运算, 如果我们有一个输入矩阵 $\begin{array}{|c|c|c|c|}\hline b_0&b_1&b_2&b_3 \\\hline\end{array}$ , 使用以下固定的$4\times 4$矩阵左乘它可以得到输出矩阵$\begin{array}{|c|c|c|c|}\hline d_0&d_1&d_2&d_3 \\\hline\end{array}$, 也即
+$$
+\begin{array}{|c|}
+\hline
+d_0 \\ \hline
+d_1 \\ \hline
+d_2 \\ \hline
+d_3 \\ \hline
+\end{array}
+\,\,=\,\,\begin{array}{|c|c|c|c|}
+\hline
+a_0& a_3& a_2& a_1 \\ \hline 
+a_1& a_0& a_3& a_2 \\ \hline
+a_2& a_1& a_0& a_3 \\ \hline
+a_3&a_2&a_1&a_0 \\ \hline
+\end{array}\,\,\,\begin{array}{|c|}
+\hline
+b_0 \\ \hline
+b_1 \\ \hline
+b_2 \\ \hline
+b_3 \\ \hline
+\end{array}
+$$
+其中
 $$
 \begin{align*}
-\{57\}\bull\{13\}&=\{57\}\bull(\{01\}\oplus\{02\}\oplus\{10\}) \\
-&=\{57\}\oplus\{\mathrm{AE}\}\oplus\{07\} \\
-&=\{\mathrm{fe}\}
+d_0&=(a_0\bull b_0)\oplus(a_3\bull b_1)\oplus(a_2\bull b_2)\oplus(a_1\bull b_3) \\
+d_1&=(a_1\bull b_0)\oplus(a_0\bull b_1)\oplus(a_3\bull b_2)\oplus(a_2\bull b_3) \\
+d_2&=(a_2\bull b_0)\oplus(a_1\bull b_1)\oplus(a_0\bull b_2)\oplus(a_3\bull b_3) \\
+d_3&=(a_3\bull b_0)\oplus(a_2\bull b_1)\oplus(a_1\bull b_2)\oplus(a_0\bull b_3)
 \end{align*}
 $$
-
 
 ### 加密过程
 
@@ -191,16 +214,35 @@ $$
 
 [^5]: 一旦给定初始密钥, 总能生成$10$轮的轮密钥矩阵, 并且轮密钥矩阵独立于明文内容.
 
- 记初始密钥矩阵为$(w[0],w[1],w[2],w[3])$, 其中
+ 记初始密钥矩阵为的第$1-4$列分别为$w[0]$, $w[1]$, $w[2]$以及$w[3]$, 其中
 $$
-\begin{align*}
-w[0]&=(41,\, 6\mathrm{c},\, 69,\, 63)^\top \\
-w[1]&=(65,\,\mathrm{5f},\,4\mathrm{b},\,75)^\top \\
-w[2]&=(6\mathrm{f},\,\mathrm{6e},\,\mathrm{6a},\,69)^\top \\
-w[3]&=(30,\,39,\,33,\,30)^\top
-\end{align*}
+w[0]=\,\,\,\begin{array}{|c|}
+\hline
+41 \\ \hline
+\mathrm{6c} \\ \hline
+69 \\ \hline
+63 \\ \hline
+\end{array}\,,\quad w[1]=\,\,\,\begin{array}{|c|}
+\hline
+65 \\ \hline
+\mathrm{5f} \\ \hline
+\mathrm{4b} \\ \hline
+75 \\ \hline
+\end{array}\,,\quad w[2]=\,\,\,\begin{array}{|c|}
+\hline
+\mathrm{6f} \\ \hline
+\mathrm{6e} \\ \hline
+\mathrm{6a} \\ \hline
+\mathrm{69} \\ \hline
+\end{array}\,,\quad w[3]=\,\,\,\begin{array}{|c|}
+\hline
+30 \\ \hline
+39 \\ \hline
+33 \\ \hline
+30 \\ \hline
+\end{array}
 $$
-再设$l$为轮数, 则轮密钥矩阵为$(w[4l],w[4l+1],w[4l+2],w[4l+3])$, 并且
+再设$l$为轮数, 则轮密钥矩阵由$w[4l]$, $w[4l+1]$, $w[4l+2]$以及$w[4l+3]$构成, 并且
 $$
 w[j]=\begin{cases}
 w[j-4]\oplus w[j-1],& j\mod4\neq 0 \\
@@ -217,7 +259,7 @@ $$
 
   [^6]: 每轮加密需要的轮常量已由[FIPS 197](https://doi.org/10.6028/NIST.FIPS.197-upd1)给定, $l=1$时的轮常量为$\mathrm{Rcon}[1]=(01,\,00,\,00,\,00)^\top$.
 
-现在我们需要得到第$1$轮的轮密钥矩阵$(w[4],w[5],w[6],w[7])$. 首先计算得到$g(w[3])=(13,\,\mathrm{c}3,\,04,\,04)^\top$,  从而有
+现在我们需要得到第$1$轮的轮密钥矩阵分块$w[4]$, $w[5]$, $w[6]$以及$w[7]$. 首先计算得到$g(w[3])=(13,\,\mathrm{c}3,\,04,\,04)^\top$,  从而有
 $$
 w[4]=w[0]\oplus g(w[3])=(\mathrm{52},\,\mathrm{af},\,\mathrm{6d},\,67)^\top
 $$
