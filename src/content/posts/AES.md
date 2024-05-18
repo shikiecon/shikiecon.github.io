@@ -207,7 +207,7 @@ w[j-4]\oplus w[j-1],& j\mod4\neq 0 \\
 w[j-4]\oplus g(w[j-1]),& j\mod4=0
 \end{cases}
 $$
-这里的函数$g$使得$w[j-1]$经过字循环、字节替换和轮常量异或. 具体而言
+这里的函数$g$使得$w[j-1]$经过字循环、字节替换和轮常量异或:
 
 - 字循环: 将$w[j-1]$中的字节循环左移$1$个单位;
 
@@ -215,7 +215,7 @@ $$
 
 - 轮常量异或: 将字节替换得到的列向量与轮常量$\mathrm{Rcon}[l]$进行异或, 这里的$l$​为轮数.[^6]
 
-  [^6]: 每轮加密需要的轮常量已由[FIPS 197](https://doi.org/10.6028/NIST.FIPS.197-upd1)给定, $l=1$时的轮常量为$(01,\,00,\,00,\,00)^\top$.
+  [^6]: 每轮加密需要的轮常量已由[FIPS 197](https://doi.org/10.6028/NIST.FIPS.197-upd1)给定, $l=1$时的轮常量为$\mathrm{Rcon}[1]=(01,\,00,\,00,\,00)^\top$.
 
 现在我们需要得到第$1$轮的轮密钥矩阵$(w[4],w[5],w[6],w[7])$. 首先计算得到$g(w[3])=(13,\,\mathrm{c}3,\,04,\,04)^\top$,  从而有
 $$
@@ -348,10 +348,10 @@ $$
 \mathrm{0b}&\mathrm{0d} &\mathrm{09} & \mathrm{0e}\\ \hline
 \end{array}\,\,\,\begin{array}{|c|c|c|c|}
 \hline
-\mathrm{97}&\mathrm{9b} &\mathrm{45} & \mathrm{e3}\\ \hline
-\mathrm{dc}&\mathrm{c7} &\mathrm{f0} & \mathrm{89}\\ \hline
-\mathrm{72}&\mathrm{1e} &\mathrm{30} &\mathrm{cf} \\ \hline
-\mathrm{9e}&\mathrm{43} &\mathrm{3f} & \mathrm{12}\\ \hline
+\mathrm{d5}&\mathrm{36} &\mathrm{08} & \mathrm{15}\\ \hline
+\mathrm{3a}&\mathrm{bb} &\mathrm{4d} & \mathrm{d0}\\ \hline
+\mathrm{01}&\mathrm{3d} &\mathrm{d4} &\mathrm{d0} \\ \hline
+\mathrm{4a}&\mathrm{33} &\mathrm{2c} & \mathrm{c0}\\ \hline
 \end{array}\,\,=\,\,\begin{array}{|c|c|c|c|}
 \hline
 \mathrm{93}&\mathrm{cc} &\mathrm{fd} & \mathrm{9a}\\ \hline
