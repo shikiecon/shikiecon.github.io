@@ -97,7 +97,7 @@ $$
 $$
 也即所有个体在接受处置后的第$s$个时期具有相同的处置效应$^\dagger\tau_s$. 此时, $\beta_\text{post}$与$\tau_s$的非凸加权平均联系在一起, 例如$\beta_\text{post}=\sum_s\omega_s^\dagger\tau_s$, 其中权重$\omega_s$之和为1但可能为负.
 
-现在问题来了, 如果所有的$\tau_s$均为正, 但是某个权重值$\omega_s$为负, 会不会导致回归系数$\beta_\text{post}$为负? 答案是肯定的. Goodman-Bacon (2021)证明了概率极限
+现在问题来了, 如果所有的$\tau_s$均为正, 但是某个权重值$\omega_s$为负, 会不会导致回归系数$\beta_\text{post}$为负? 答案是肯定的. `Goodman-Bacon (2021)`证明了概率极限
 $$
 \underset{n\to\infty}{\text{plim}}\hat{\beta}_\text{post}=\text{VWATT}-\text{VWCT}+\Delta \text{ATT}
 $$
@@ -135,7 +135,7 @@ $$
 
 ### Callaway-Sant'Anna估计量
 
-对于随时间和组群变化的一般性异质性处置效应路径, 可以使用Callaway and Sant'Anna (2021)提出的稳健估计量来解决TWFE估计偏误.
+对于随时间和组群变化的一般性异质性处置效应路径, 可以使用`Callaway and Sant'Anna (2021)`提出的稳健估计量来解决TWFE估计偏误.
 
 具体可以考虑
 $$
@@ -153,13 +153,13 @@ $$
 \theta_{\text{DR}}(g,t)&=\mathbb{E}\left[\left(\frac{G_g}{\mathbb{E}[G_g]}-\frac{\frac{p_{g,t}(X)C_{g,t}^\ast}{1-p_{g,t}(X)}}{\mathbb{E}\left[\frac{p_{g,t}(X)C_{g,t}^\ast}{1-p_{g,t}(X)}\right]}\right)\{Y_t-Y_{g-1}-m_{g,t}(X)\}\right]
 \end{align*}
 $$
-其中$m_{g,t}(X)=\mathbb{E}[Y_t-Y_{g-1}|X,C_{g,t}^\ast=1]$, $p_{g,t}(X)=\mathbb{P}[G_g=1|X,G_g+C_{g,t}^\ast=1]$. 在温和的正则条件下, Callaway and Sant'Anna (2021)证明了
+其中$m_{g,t}(X)=\mathbb{E}[Y_t-Y_{g-1}|X,C_{g,t}^\ast=1]$, $p_{g,t}(X)=\mathbb{P}[G_g=1|X,G_g+C_{g,t}^\ast=1]$. 在温和的正则条件下, `Callaway and Sant'Anna (2021)`证明了
 $$
 \theta(g,t)=\theta_\text{RA}(g,t)=\theta_\text{IPW}(g,t)=\theta_\text{DR}(g,t)
 $$
 由于RA, IPW和DR只依赖于$(Y,X,G_g,C_{g,t}^\ast)$, 因此可以通过它们得到$\theta(g,t)$​的估计量.
 
-然而, 在长时间跨度和多处理时点的情况下, 报告每一个$\theta(g,t)$是很麻烦的事情, 并且可能不准确, Callaway and Sant'Anna (2021)提供了将不同$\theta(g,t)$进行加总的机制
+然而, 在长时间跨度和多处理时点的情况下, 报告每一个$\theta(g,t)$是很麻烦的事情, 并且可能不准确, `Callaway and Sant'Anna (2021)`提供了将不同$\theta(g,t)$进行加总的机制
 $$
 \theta=\sum_g\sum_{t=2}^Tw(g,t)\cdot\theta(g,t)
 $$
@@ -169,7 +169,7 @@ $$
 $$
 称为 **事件研究参数 (event-study parameter)**, 它给出了在不同处置组群中, 在接受处置后$e$个时期的处置效应的加权平均值.
 
-现在来看对$\theta(g,t)$的估计, 根据Callaway and Sant'Anna (2021)的研究, 采取以下步骤是可行的
+现在来看对$\theta(g,t)$的估计, 根据`Callaway and Sant'Anna (2021)`的研究, 采取以下步骤是可行的
 
 1. 设$t_0=(g-1)1[t\ge g]+(t-1)1[t<g]$, 将样本限制在时点$t$和$t_0$上, 也即用于估计$\theta(g,t)$的个体$i$必须在时点$t$和$t_0$上可观测;
 2. 使用参数模型估计$p_{g,t}(X)$和$m_{g,t}(X)$, 具体而言:
@@ -178,6 +178,79 @@ $$
 
 3. 将估计得到的$\hat{m}_{g,t}(X)$, $\hat{p}_{g,t}(X)$插入RA, IPW或DR的表达式中, 并用样本均值替代期望算子.
 
-最后, 对于$\hat{\theta}(g,t)$的协方差矩阵的估计可以通过影响函数法 (influence function approach)计算, 它在数值上等价于GMM得到的结果, 但运算速度更快. CS的估计和统计推断可以通过[csdid2](https://github.com/friosavila/csdid2)包在Stata和R中实现.
+最后, 对于$\hat{\theta}(g,t)$的协方差矩阵的估计可以通过c**影响函数法(influence function approach)** 计算, 它在数值上等价于GMM得到的结果, 但运算速度更快. CS的估计和统计推断可以通过[csdid2](https://github.com/friosavila/csdid2)包在Stata和R中实现.
 
 值得注意的是, 如果协变量$X_g$可以决定组群接受处置的时点, 那么这种处置时点的内生性可能导致平行趋势假设不成立, 此时使用CS估计量仍然是有偏的.
+
+### 敏感性分析
+
+我们已经清楚, 无论是经典的DiD还是交错处置的DiD都依赖于必要的平行趋势假设, 然而这个假设本质上是无法检验的, 因此DiD的结果需要谨慎看待.
+
+首先将整个时间窗口设置为$[-K,L]$, 仍然考虑基本的TWFE模型
+$$
+Y_{i,t}=\alpha_i+\lambda_t+\sum_{s\ne0}1[s=t]\times D_i\times\beta_s+\varepsilon_{i,t}
+$$
+这里为了避免完全多重共线性剔除了$s=0$基期. 如果个体$i$在$t=1$时接受处置就将$D_i$设置为1, 否则为0, 则经典DiD估计量
+$$
+\hat{\beta}_s=(\bar{Y}_{s,1}-\bar{Y}_{s,0})-(\bar{Y}_{0,1}-\bar{Y}_{0,0})
+$$
+数值上等于TWFE估计量, 其中$\bar{Y}_{s,d}$是$D_i=d$的那些个体在时点$s$的结果变量的样本均值.
+
+现在使用全体$\hat{\beta}_s$构成列向量$\hat{\beta}=(\hat{\beta}_{\text{pre}}',\hat{\beta}_{\text{post}}')'\in\mathbb{R}^{K+L}$, 其中$\hat{\beta}_\text{pre}=(\hat{\beta}_{-K},\cdots,\hat{\beta}_{-1})$, 以及$\hat{\beta}_{\text{post}}=(\hat{\beta}_1,\cdots,\hat{\beta}_L)$, 它们分别收集了处置前和处置后的估计量. 在温和的条件下, 当样本容量$N\to\infty$时有$\sqrt{N}(\hat{\beta}-\beta)\xrightarrow{d}\mathcal{N}(0,\Sigma)$.
+
+现在我们假设$\beta$可以被分解为
+$$
+\beta=\underbrace{\begin{pmatrix}
+          \tau_\text{pre} \\
+          \tau_\text{post}
+        \end{pmatrix}}_{=:\tau}+\underbrace{\begin{pmatrix}
+          \delta_\text{pre} \\
+          \delta_\text{post}
+        \end{pmatrix}}_{=:\delta},\quad \tau_\text{pre}=0
+$$
+其中$\tau$表示感兴趣的处置效应, $\delta$表示如果没有政策冲击(处置), 控制组和处置组的趋势差异. 当无预期效应成立时有$\tau_\text{pre}=0$, 而当平行趋势成立时有$\delta_\text{post}=0$, 因此$\beta_\text{post}=\tau_\text{post}$. 可以证明, 在经典DiD和事件研究的框架下, $\beta$都可以被这样分解. 例如
+$$
+\beta_s={^\dagger}\tau_{s}+\underbrace{\mathbb{E}[Y_{i,s}(0)-Y_{i,0}(0)|D_i=1]-\mathbb{E}[Y_{i,s}(0)-Y_{i,0}(0)|D_i=0]}_{=:\delta_s}
+$$
+其中$^\dagger\tau_{s}=\mathbb{E}[Y_{i,s}(1)-Y_{i,s}(0)|D_i=1]$, 在无预期效应条件下, 对任意$s<0$都有$^\dagger\tau_{s}=0$​, 这就完成了分解.
+
+由于事前趋势检验难以真正检验平行趋势是否成立, 实行敏感性分析或许是一个更好的选择. 现在我们关注的目标参数是处置后因果效应的线性组合$\theta=l'\tau_\text{post}$, 其中$l$是已知的$L\times1$维向量. 通过将$\delta$置于可能的趋势差异集$\Delta\subset\mathbb{R}^{K+L}$中, 参数$\theta$可以被 **部分识别(partial identified)**. 例如, 将$\delta$限制在$\Delta=\{\delta:\delta_\text{post}=0\}$中就意味着平行趋势假设成立.
+
+在违反平行趋势假设$\delta\in\Delta\ne\{\delta:\delta_\text{post}=0\}$的情况下, 参数$\theta$被部分识别, 识别集是在$\delta\in\Delta$的限制条件下, 与$\beta$的给定值相一致的$\theta$​值构成的集合
+$$
+\mathcal{S}(\beta,\Delta)=\left\{\theta:\exists\delta\in\Delta,\tau_\text{post}\in\mathbb{R}^L\,\,\,\mathrm{s.t.}\,l'\tau_\text{post}=\theta,\,\beta=\delta+\begin{pmatrix}                                                                                                                             0 \\
+                                                                                                                                                          \tau_\text{post}
+                                                                                                                                                      \end{pmatrix}\right\}
+$$
+可以证明, 如果$\Delta$是闭和凸的, 那么识别集$\mathcal{S}(\beta,\Delta)$是$\mathbb{R}$上的区间$[\theta^{\text{lb}}(\beta,\Delta),\theta^{\text{ub}}(\beta,\Delta)]$, 其中
+$$
+\begin{align*}
+\theta^{\text{lb}}(\beta,\Delta)&=l'\beta_\text{post}-\left(\max_\delta\, l'\delta_\text{post}\,\,\,\mathrm{s.t.}\,\delta\in\Delta,\,\delta_\text{pre}=\beta_\text{pre}\right) \\
+\theta^{\text{ub}}(\beta,\Delta)&=l'\beta_\text{post}-\left(\min_\delta\, l'\delta_\text{post}\,\,\,\mathrm{s.t.}\,\delta\in\Delta,\,\delta_\text{pre}=\beta_\text{pre}\right)
+\end{align*}
+$$
+`Rambachan and Roth (2023)`给出了如何通过选取合适的$\Delta$, 得到合适的DiD估计区间:
+
+- 研究者可能愿意假设造成处置后非平行趋势的混杂因素在量级上不会比处理前的混杂因素大太多, 这可以正式地表述为$\delta\in\Delta^\text{RM}(\bar{M})$, $\bar{M}\ge0$, 其中
+  $$
+  \Delta^\text{RM}(\bar{M})=\left\{\delta:\forall t\ge0,\,|\delta_{t+1}-\delta_t|\leq \bar{M}\cdot \max_{s<0}|\delta_{s+1}-\delta_s|\right\}
+  $$
+  这里的$\Delta^\text{RM}(\bar{M})$用$\bar{M}$乘以处置前最大平行趋势违反来约束处置后连续时期之间的最大平行趋势违反. 比方说, 如果造成平行趋势不成立的混杂经济冲击在前后期相似, 那么选取$\Delta^\text{RM}(\bar{M})$​可能是合理的.
+
+- 研究者可能担心长期趋势带来的对平行趋势的干扰 (例如劳动力供给的长期变化), 但这种趋势随着时间推动而平稳演变, 此时的趋势差异集为
+  $$
+  \Delta^\text{SD}(M)=\{\delta:|(\delta_{t+1}-\delta_t)-(\delta_{t}-\delta_{t-1})|\leq M,\,\forall t\}
+  $$
+  其中参数$M\ge0$控制了$\delta$的斜率在连续周期之间可以变化的幅度, 由此限制了离散二阶导数的范围. 当$M=0$时, $\Delta^\text{SD}(0)$​​要求趋势差异是线性的, 这与实际应用中常见的参数线性假设相对应.
+
+- 考虑**多面限制(polyhedral restriction)** 的情况以便研究者依赖于特定知识来施加限制, 此时$\Delta=\{\delta:A\delta\leq d\}$, 这里的$A$和$d$分别是已知的矩阵和向量.
+
+根据Monte Carlo模拟的结果, 对于一般和多面形式的$\Delta$, 推荐使用ARP的条件混合方法, 而对于$\Delta^\text{SD}(M)$和其它满足一致性和有限样本近最优性条件的特殊情况, 则推荐使用FLCI. 这些方法的使用具体见作者提供的[HonestDiD](https://github.com/asheshrambachan/HonestDiD)命令包, 并且还提供了例子.
+
+### 参考文献
+
+Callaway B, Sant’Anna P H. Difference-in-Differences with multiple time periods[J]. Journal of Econometrics, 2021, 225(2): 200-230.
+
+Goodman-Bacon A. Difference-in-Differences with variation in treatment timing[J]. Journal of Econo- metrics, 2021, 225(2): 254-277.
+
+Rambachan A, Roth J. A More Credible Approach to Parallel Trends[J]. Review of Economic Studies, 2023, 90(5): 2555-2591.
