@@ -39,9 +39,7 @@ $$
 $$
 ^\dagger\tau=\mathbb{E}[Y_{i,2}-Y_{i,1}|D_i=1]-\mathbb{E}[Y_{i,2}-Y_{i,1}|D_i=0]
 $$
-上式第1项表示由于政策冲击和其他因素造成的处置组结果变量的平均差异, 第2项为其他因素造成的控制组结果变量的平均差异, 因此该方法称为$2\times 2$​双重差分, 如下图所示.
-
-![DiD](/assets/images/fig1.png)
+上式第1项表示由于政策冲击和其他因素造成的处置组结果变量的平均差异, 第2项为其他因素造成的控制组结果变量的平均差异, 因此该方法称为$2\times 2$​双重差分, 如下[图1](https://raw.githubusercontent.com/shikiecon/shikiecon.github.io/main/src/assets/images/fig1.png)所示.
 
 类似地, 我们可以直接写出$^\dagger\tau$的一致估计量
 $$
