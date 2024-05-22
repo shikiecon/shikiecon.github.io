@@ -41,7 +41,7 @@ $$
 $$
 上式第1项表示由于政策冲击和其他因素造成的处置组结果变量的平均差异, 第2项为其他因素造成的控制组结果变量的平均差异, 因此该方法称为$2\times 2$​双重差分, 如下图所示.
 
-![Difference-in-Differences](/images/fig1.png = 1148x704)
+![Astro](https://raw.githubusercontent.com/shikiecon/shikiecon.github.io/main/public/images/fig1.png)
 
 类似地, 我们可以直接写出$^\dagger\tau$的一致估计量
 $$
