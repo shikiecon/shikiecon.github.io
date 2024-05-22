@@ -168,3 +168,16 @@ $$
 \theta_{\text{es}}(l)=\sum_g1[g+l\leq T]\cdot\mathbb{P}[G=g|G+l\leq T]\cdot\theta(g,t)
 $$
 称为 **事件研究参数 (event-study parameter)**, 它给出了在不同处置组群中, 在接受处置后$e$个时期的处置效应的加权平均值.
+
+现在来看对$\theta(g,t)$的估计, 根据Callaway and Sant'Anna (2021)的研究, 采取以下步骤是可行的
+
+1. 设$t_0=(g-1)1[t\ge g]+(t-1)1[t<g]$, 将样本限制在时点$t$和$t_0$上, 也即用于估计$\theta(g,t)$的个体$i$必须在时点$t$和$t_0$上可观测;
+2. 使用参数模型估计$p_{g,t}(X)$和$m_{g,t}(X)$, 具体而言:
+   - 当$C_{g,t}^\ast=1$时用$Y_{t}-Y_{t_0}$对$X$进行线性回归, 得到预测值$\hat{m}_{g,t}(X)$;
+   - 用$G_g$对$X$进行Logit回归, 得到预测值$\hat{p}_{g,t}(X)$;
+
+3. 将估计得到的$\hat{m}_{g,t}(X)$, $\hat{p}_{g,t}(X)$插入RA, IPW或DR的表达式中, 并用样本均值替代期望算子.
+
+最后, 对于$\hat{\theta}(g,t)$的协方差矩阵的估计可以通过影响函数法 (influence function approach)计算, 它在数值上等价于GMM得到的结果, 但运算速度更快. CS的估计和统计推断可以通过[csdid2](https://github.com/friosavila/csdid2)包在Stata和R中实现.
+
+值得注意的是, 如果协变量$X_g$可以决定组群接受处置的时点, 那么这种处置时点的内生性可能导致平行趋势假设不成立, 此时使用CS估计量仍然是有偏的.
