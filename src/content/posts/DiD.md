@@ -251,6 +251,6 @@ $$
 
 Callaway B, Sant’Anna P H. Difference-in-Differences with multiple time periods[J]. Journal of Econometrics, 2021, 225(2): 200-230.
 
-Goodman-Bacon A. Difference-in-Differences with variation in treatment timing[J]. Journal of Econo- metrics, 2021, 225(2): 254-277.
+Goodman-Bacon A. Difference-in-Differences with variation in treatment timing[J]. Journal of Econometrics, 2021, 225(2): 254-277.
 
 Rambachan A, Roth J. A More Credible Approach to Parallel Trends[J]. Review of Economic Studies, 2023, 90(5): 2555-2591.
